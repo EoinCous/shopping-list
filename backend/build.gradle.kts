@@ -28,6 +28,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("me.paulschwarz:spring-dotenv:4.0.0")
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
