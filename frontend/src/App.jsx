@@ -6,9 +6,11 @@ function App() {
   const [newItemName, setNewItemName] = useState("");
   const [newItemQty, setNewItemQty] = useState(1);
 
+  const baseUrl = "http://localhost:8080/";
+
   // Fetch items on load
   useEffect(() => {
-    fetch("http://localhost:8080/api/items")
+    fetch(`${baseUrl}api/items`)
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((err) => console.error("Error fetching items:", err));
@@ -18,7 +20,7 @@ function App() {
     e.preventDefault();
     const item = { name: newItemName, quantity: newItemQty, isChecked: false };
 
-    fetch("/api/items", {
+    fetch(`${baseUrl}api/items`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(item),
@@ -37,7 +39,7 @@ function App() {
 
     const updated = { ...item, isChecked: !isChecked };
 
-    fetch(`/api/items/${id}`, {
+    fetch(`${baseUrl}api/items/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updated),
@@ -54,7 +56,7 @@ function App() {
 
     const updated = { ...item, name, quantity };
 
-    fetch(`/api/items/${id}`, {
+    fetch(`${baseUrl}api/items/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updated),
@@ -66,7 +68,7 @@ function App() {
   };
 
   const deleteItem = (id) => {
-    fetch(`/api/items/${id}`, { method: "DELETE" }).then(() => {
+    fetch(`${baseUrl}api/items/${id}`, { method: "DELETE" }).then(() => {
       setItems(items.filter((i) => i.id !== id));
     });
   };
