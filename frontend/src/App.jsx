@@ -6,7 +6,7 @@ function App() {
   const [newItemName, setNewItemName] = useState("");
   const [newItemQty, setNewItemQty] = useState(1);
 
-  const baseUrl = "http://localhost:8080/";
+  const baseUrl = "https://shopping-list-uqzm.onrender.com/";
 
   // Fetch items on load
   useEffect(() => {
