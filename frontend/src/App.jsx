@@ -7,7 +7,6 @@ function App() {
   const [newItemQty, setNewItemQty] = useState(1);
 
   const baseUrl = "https://shopping-list-uqzm.onrender.com/";
-  // const baseUrl = "http://localhost:5173/";
 
   // Fetch items on load
   useEffect(() => {
@@ -74,6 +73,46 @@ function App() {
     });
   };
 
+  // --- Bulk actions ---
+  const checkAll = () => {
+    const updates = items.map((item) => ({ ...item, isChecked: true }));
+    Promise.all(
+      updates.map((item) =>
+        fetch(`${baseUrl}api/items/${item.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item),
+        }).then((res) => res.json())
+      )
+    ).then((saved) => setItems(saved));
+  };
+
+  const uncheckAll = () => {
+    const updates = items.map((item) => ({ ...item, isChecked: false }));
+    Promise.all(
+      updates.map((item) =>
+        fetch(`${baseUrl}api/items/${item.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item),
+        }).then((res) => res.json())
+      )
+    ).then((saved) => setItems(saved));
+  };
+
+  const deleteAll = () => {
+    Promise.all(
+      items.map((item) =>
+        fetch(`${baseUrl}api/items/${item.id}`, { method: "DELETE" })
+      )
+    ).then(() => setItems([]));
+  };
+
+  // --- Sorting (unchecked first) ---
+  const sortedItems = [...items].sort((a, b) =>
+    a.isChecked === b.isChecked ? 0 : a.isChecked ? 1 : -1
+  );
+
   return (
     <div className="app">
       <h1 className="title">Shopping List</h1>
@@ -96,8 +135,14 @@ function App() {
         <button type="submit">Add</button>
       </form>
 
+      <div className="bulk-actions">
+        <button onClick={checkAll}>Check All</button>
+        <button onClick={uncheckAll}>Uncheck All</button>
+        <button onClick={deleteAll}>Delete All</button>
+      </div>
+
       <ul className="list">
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <li key={item.id} className={item.isChecked ? "checked" : ""}>
             <input
               type="checkbox"

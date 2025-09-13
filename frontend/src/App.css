@@ -55,10 +55,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.add-form button:hover {
-  background: #218838;
-}
-
 .add-form button:active {
   transform: translateY(1px);
 }
@@ -129,15 +125,25 @@
   color: white;
 }
 
-.actions button:first-of-type:hover {
-  background: #0069d9;
-}
-
 .actions button:last-of-type {
   background: #dc3545;
   color: white;
 }
 
-.actions button:last-of-type:hover {
-  background: #c82333;
+.bulk-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.bulk-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #6c757d;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
