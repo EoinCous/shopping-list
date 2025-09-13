@@ -7,6 +7,7 @@ function App() {
   const [newItemQty, setNewItemQty] = useState(1);
 
   const baseUrl = "https://shopping-list-uqzm.onrender.com/";
+  // const baseUrl = "http://localhost:5173/";
 
   // Fetch items on load
   useEffect(() => {
@@ -98,14 +99,14 @@ function App() {
       <ul className="list">
         {items.map((item) => (
           <li key={item.id} className={item.isChecked ? "checked" : ""}>
-            <label>
-              <input
-                type="checkbox"
-                checked={item.isChecked}
-                onChange={() => toggleItem(item.id, item.isChecked)}
-              />
+            <input
+              type="checkbox"
+              checked={item.isChecked}
+              onChange={() => toggleItem(item.id, item.isChecked)}
+            />
+            <span className="item-text">
               {item.name} (x{item.quantity})
-            </label>
+            </span>
             <div className="actions">
               <button
                 onClick={() =>
