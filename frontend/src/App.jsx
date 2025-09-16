@@ -5,6 +5,9 @@ function App() {
   const [items, setItems] = useState([]);
   const [newItemName, setNewItemName] = useState("");
   const [newItemQty, setNewItemQty] = useState(1);
+  const [editingId, setEditingId] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editQty, setEditQty] = useState(1);
 
   const baseUrl = "https://shopping-list-uqzm.onrender.com/";
 
@@ -50,11 +53,11 @@ function App() {
       });
   };
 
-  const updateItem = (id, name, quantity) => {
+  const saveUpdate = (id) => {
     const item = items.find((i) => i.id === id);
     if (!item) return;
 
-    const updated = { ...item, name, quantity };
+    const updated = { ...item, name: editName, quantity: editQty };
 
     fetch(`${baseUrl}api/items/${id}`, {
       method: "PUT",
@@ -64,6 +67,7 @@ function App() {
       .then((res) => res.json())
       .then((saved) => {
         setItems(items.map((i) => (i.id === id ? saved : i)));
+        setEditingId(null);
       });
   };
 
@@ -144,29 +148,49 @@ function App() {
       <ul className="list">
         {sortedItems.map((item) => (
           <li key={item.id} className={item.isChecked ? "checked" : ""}>
-            <input
-              type="checkbox"
-              checked={item.isChecked}
-              onChange={() => toggleItem(item.id, item.isChecked)}
-            />
-            <span className="item-text">
-              {item.name} (x{item.quantity})
-            </span>
-            <div className="actions">
-              <button
-                onClick={() =>
-                  updateItem(
-                    item.id,
-                    prompt("New name:", item.name) || item.name,
-                    parseInt(prompt("New quantity:", item.quantity)) ||
-                      item.quantity
-                  )
-                }
-              >
-                Edit
-              </button>
-              <button onClick={() => deleteItem(item.id)}>Delete</button>
-            </div>
+
+            {editingId === item.id ? (
+              <div className="editing">
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="1"
+                  value={editQty}
+                  onChange={(e) => setEditQty(parseInt(e.target.value))}
+                />
+                <div className="editing-actions">
+                  <button className="save-btn" onClick={() => saveUpdate(item.id)}>Save</button>
+                  <button className="cancel-btn" onClick={() => setEditingId(null)}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <input
+                type="checkbox"
+                checked={item.isChecked}
+                onChange={() => toggleItem(item.id, item.isChecked)}
+              />
+                <span className="item-text">
+                  {item.name} (x{item.quantity})
+                </span>
+                <div className="actions">
+                  <button
+                    onClick={() => {
+                      setEditingId(item.id);
+                      setEditName(item.name);
+                      setEditQty(item.quantity);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button onClick={() => deleteItem(item.id)}>Delete</button>
+                </div>
+              </>
+            )}
           </li>
         ))}
       </ul>
