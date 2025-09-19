@@ -1,5 +1,4 @@
-// supabaseService.js
-import { supabase } from './supabaseClient';
+import { supabase } from "./supabaseClient";
 
 export const fetchItems = async () => {
   const { data, error } = await supabase
@@ -15,38 +14,32 @@ export const fetchItems = async () => {
 };
 
 export const addItem = async (name, qty) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("items")
-    .insert([{ name, quantity: qty, is_checked: false }])
-    .select();
+    .insert([{ name, quantity: qty, is_checked: false }]);
 
   if (error) {
     console.error("Error adding item:", error);
-    return null;
+    return false;
   }
-  return data[0];
+  return true;
 };
 
 export const toggleItem = async (id, isChecked) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("items")
     .update({ is_checked: !isChecked })
-    .eq("id", id)
-    .select();
+    .eq("id", id);
 
   if (error) {
     console.error("Error toggling item:", error);
-    return null;
+    return false;
   }
-  return data[0];
+  return true;
 };
 
 export const deleteItem = async (id) => {
-  const { error } = await supabase
-    .from("items")
-    .delete()
-    .eq("id", id);
-
+  const { error } = await supabase.from("items").delete().eq("id", id);
   if (error) {
     console.error("Error deleting item:", error);
     return false;
@@ -55,49 +48,46 @@ export const deleteItem = async (id) => {
 };
 
 export const saveUpdate = async (id, name, qty) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("items")
     .update({ name, quantity: qty })
-    .eq("id", id)
-    .select();
+    .eq("id", id);
 
   if (error) {
     console.error("Error updating item:", error);
-    return null;
+    return false;
   }
-  return data[0];
+  return true;
 };
 
 export const checkAll = async () => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("items")
     .update({ is_checked: true })
-    .neq("is_checked", true) // only update those not checked
-    .select();
+    .neq("is_checked", true); // only those not checked
 
   if (error) {
     console.error("Error checking all:", error);
-    return null;
+    return false;
   }
-  return data;
+  return true;
 };
 
 export const uncheckAll = async () => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("items")
     .update({ is_checked: false })
-    .neq("is_checked", false)
-    .select();
+    .neq("is_checked", false);
 
   if (error) {
     console.error("Error unchecking all:", error);
-    return null;
+    return false;
   }
-  return data;
+  return true;
 };
 
 export const deleteAll = async () => {
-  const { error } = await supabase.from("items").delete().neq("id", 0); // delete all rows
+  const { error } = await supabase.from("items").delete().neq("id", 0);
   if (error) {
     console.error("Error deleting all:", error);
     return false;

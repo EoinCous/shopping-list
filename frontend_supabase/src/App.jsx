@@ -10,6 +10,7 @@ import {
   uncheckAll as uncheckAllSupabase,
   deleteAll as deleteAllSupabase
 } from "./supabase/supabaseService";
+import { supabase } from './supabase/supabaseClient';
 
 function App() {
   const [items, setItems] = useState([]);
@@ -19,66 +20,75 @@ function App() {
   const [editName, setEditName] = useState("");
   const [editQty, setEditQty] = useState(1);
 
-  // Fetch on load
+  // Fetch items on load
   useEffect(() => {
     (async () => {
       const data = await fetchItemsSupabase();
       setItems(data);
     })();
+
+    // Realtime subscription
+    const channel = supabase
+      .channel("items-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "items" },
+        (payload) => {
+          console.log("Realtime event:", payload);
+
+          setItems((prev) => {
+            switch (payload.eventType) {
+              case "INSERT":
+                return [...prev, payload.new];
+              case "UPDATE":
+                return prev.map((i) =>
+                  i.id === payload.new.id ? payload.new : i
+                );
+              case "DELETE":
+                return prev.filter((i) => i.id !== payload.old.id);
+              default:
+                return prev;
+            }
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleAddItem = async (e) => {
     e.preventDefault();
-    const newItem = await addItemSupabase(newItemName, newItemQty);
-    if (newItem) setItems([...items, newItem]);
+    await addItemSupabase(newItemName, newItemQty);
     setNewItemName("");
     setNewItemQty(1);
   };
 
   const handleToggleItem = async (id, isChecked) => {
-    const updated = await toggleItemSupabase(id, isChecked);
-    if (updated) {
-      setItems(items.map((i) => (i.id === id ? updated : i)));
-    }
+    await toggleItemSupabase(id, isChecked);
   };
 
   const handleSaveUpdate = async (id) => {
-    const updated = await saveUpdateSupabase(id, editName, editQty);
-    if (updated) {
-      setItems(items.map((i) => (i.id === id ? updated : i)));
-      setEditingId(null);
-    }
+    await saveUpdateSupabase(id, editName, editQty);
+    setEditingId(null);
   };
 
   const handleDeleteItem = async (id) => {
-    const success = await deleteItemSupabase(id);
-    if (success) setItems(items.filter((i) => i.id !== id));
+    await deleteItemSupabase(id);
   };
 
   const handleCheckAll = async () => {
-    const updated = await checkAllSupabase();
-    if (updated) {
-      // merge updated rows into state
-      const newItems = items.map(
-        (i) => updated.find((u) => u.id === i.id) || i
-      );
-      setItems(newItems);
-    }
+    await checkAllSupabase();
   };
 
   const handleUncheckAll = async () => {
-    const updated = await uncheckAllSupabase();
-    if (updated) {
-      const newItems = items.map(
-        (i) => updated.find((u) => u.id === i.id) || i
-      );
-      setItems(newItems);
-    }
+    await uncheckAllSupabase();
   };
 
   const handleDeleteAll = async () => {
-    const success = await deleteAllSupabase();
-    if (success) setItems([]);
+    await deleteAllSupabase();
   };
 
   // Sorting (unchecked first)
