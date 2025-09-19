@@ -31,6 +31,7 @@
   border-radius: 8px;
   font-size: 1rem;
   background: #fff;
+  color: #333;
   transition: border-color 0.2s ease;
   -webkit-appearance: none;
   appearance: none;
@@ -188,6 +189,7 @@
 
 .bulk-actions {
   display: flex;
+  justify-content: center;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
@@ -196,10 +198,11 @@
 .bulk-actions button {
   padding: 0.5rem 1rem;
   border: none;
-  background: #6c757d;
+  background: #6f42c1;
   color: white;
   border-radius: 6px;
   font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.1s ease;
 }

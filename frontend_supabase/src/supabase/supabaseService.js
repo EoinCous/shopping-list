@@ -67,3 +67,40 @@ export const saveUpdate = async (id, name, qty) => {
   }
   return data[0];
 };
+
+export const checkAll = async () => {
+  const { data, error } = await supabase
+    .from("items")
+    .update({ is_checked: true })
+    .neq("is_checked", true) // only update those not checked
+    .select();
+
+  if (error) {
+    console.error("Error checking all:", error);
+    return null;
+  }
+  return data;
+};
+
+export const uncheckAll = async () => {
+  const { data, error } = await supabase
+    .from("items")
+    .update({ is_checked: false })
+    .neq("is_checked", false)
+    .select();
+
+  if (error) {
+    console.error("Error unchecking all:", error);
+    return null;
+  }
+  return data;
+};
+
+export const deleteAll = async () => {
+  const { error } = await supabase.from("items").delete().neq("id", 0); // delete all rows
+  if (error) {
+    console.error("Error deleting all:", error);
+    return false;
+  }
+  return true;
+};

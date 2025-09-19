@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import {
-  fetchItems,
-  addItem,
+  fetchItems as fetchItemsSupabase,
+  addItem as addItemSupabase,
   toggleItem as toggleItemSupabase,
   deleteItem as deleteItemSupabase,
   saveUpdate as saveUpdateSupabase,
+  checkAll as checkAllSupabase,
+  uncheckAll as uncheckAllSupabase,
+  deleteAll as deleteAllSupabase
 } from "./supabase/supabaseService";
 
 function App() {
@@ -19,14 +22,14 @@ function App() {
   // Fetch on load
   useEffect(() => {
     (async () => {
-      const data = await fetchItems();
+      const data = await fetchItemsSupabase();
       setItems(data);
     })();
   }, []);
 
   const handleAddItem = async (e) => {
     e.preventDefault();
-    const newItem = await addItem(newItemName, newItemQty);
+    const newItem = await addItemSupabase(newItemName, newItemQty);
     if (newItem) setItems([...items, newItem]);
     setNewItemName("");
     setNewItemQty(1);
@@ -50,6 +53,32 @@ function App() {
   const handleDeleteItem = async (id) => {
     const success = await deleteItemSupabase(id);
     if (success) setItems(items.filter((i) => i.id !== id));
+  };
+
+  const handleCheckAll = async () => {
+    const updated = await checkAllSupabase();
+    if (updated) {
+      // merge updated rows into state
+      const newItems = items.map(
+        (i) => updated.find((u) => u.id === i.id) || i
+      );
+      setItems(newItems);
+    }
+  };
+
+  const handleUncheckAll = async () => {
+    const updated = await uncheckAllSupabase();
+    if (updated) {
+      const newItems = items.map(
+        (i) => updated.find((u) => u.id === i.id) || i
+      );
+      setItems(newItems);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    const success = await deleteAllSupabase();
+    if (success) setItems([]);
   };
 
   // Sorting (unchecked first)
@@ -78,6 +107,12 @@ function App() {
         />
         <button type="submit">Add</button>
       </form>
+
+      <div className="bulk-actions">
+        <button onClick={handleCheckAll}>Check All</button>
+        <button onClick={handleUncheckAll}>Uncheck All</button>
+        <button onClick={handleDeleteAll}>Delete All</button>
+      </div>
 
       <ul className="list">
         {sortedItems.map((item) => (
