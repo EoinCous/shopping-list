@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import "./css/App.css";
 import {
   fetchItems as fetchItemsSupabase,
-  addItem as addItemSupabase,
   toggleItem as toggleItemSupabase,
   deleteItem as deleteItemSupabase,
   saveUpdate as saveUpdateSupabase,
@@ -11,11 +10,10 @@ import {
   deleteAll as deleteAllSupabase
 } from "./supabase/supabaseService";
 import { supabase } from './supabase/supabaseClient';
+import AddItemForm from "./components/AddItemForm";
 
 function App() {
   const [items, setItems] = useState([]);
-  const [newItemName, setNewItemName] = useState("");
-  const [newItemQty, setNewItemQty] = useState(1);
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
   const [editQty, setEditQty] = useState(1);
@@ -57,13 +55,6 @@ function App() {
     };
   }, []);
 
-  const handleAddItem = async (e) => {
-    e.preventDefault();
-    await addItemSupabase(newItemName, newItemQty);
-    setNewItemName("");
-    setNewItemQty(1);
-  };
-
   const handleToggleItem = async (id, isChecked) => {
     await toggleItemSupabase(id, isChecked);
   };
@@ -98,23 +89,7 @@ function App() {
     <div className="app">
       <h1 className="title">Shopping List</h1>
 
-      <form onSubmit={handleAddItem} className="add-form">
-        <input
-          type="text"
-          placeholder="Item name"
-          value={newItemName}
-          onChange={(e) => setNewItemName(e.target.value)}
-          required
-        />
-        <input
-          type="number"
-          min="1"
-          value={newItemQty}
-          onChange={(e) => setNewItemQty(parseInt(e.target.value))}
-          required
-        />
-        <button type="submit">Add</button>
-      </form>
+      <AddItemForm />
 
       <div className="bulk-actions">
         <button onClick={handleCheckAll}>Check All</button>
