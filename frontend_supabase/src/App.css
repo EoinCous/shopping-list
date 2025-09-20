@@ -1,18 +1,26 @@
-/* Mobile-first base styles */
+:root {
+  --primary: #6f42c1;
+  --primary-dark: #59339a;
+  --primary-light: #8c63d9;
+  --secondary: #ffffff;
+  --danger: #a83279;
+  --success: #20c997;
+}
+
 .app {
   width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f8f9fa;
+  background: var(--primary);
   box-sizing: border-box;
 }
 
 .title {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: var(--secondary);
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -27,10 +35,10 @@
 .add-form input[type="text"],
 .add-form input[type="number"] {
   padding: 0.875rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--primary-light);
   border-radius: 8px;
   font-size: 1rem;
-  background: #fff;
+  background: var(--secondary);
   color: #333;
   transition: border-color 0.2s ease;
   -webkit-appearance: none;
@@ -39,20 +47,20 @@
 
 .add-form input:focus {
   outline: none;
-  border-color: #28a745;
-  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
 }
 
 .add-form button {
   padding: 0.875rem 1rem;
   border: none;
-  background: #28a745;
-  color: white;
+  background: var(--secondary);
+  color: var(--primary);
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease, color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -72,9 +80,9 @@
   align-items: center;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  background: #fff;
+  background: var(--secondary);
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--primary-light);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   min-height: 60px;
 }
@@ -106,8 +114,8 @@
 }
 
 .list li.checked {
-  opacity: 0.7;
-  background: #f8f9fa;
+  opacity: 0.8;
+  background: #f3f0f9;
 }
 
 .actions {
@@ -121,14 +129,14 @@
   transform: scale(0.98);
 }
 
-.actions button:first-of-type {
-  background: #007bff;
-  color: white;
+.actions .edit-btn {
+  background: var(--primary);
+  color: var(--secondary);
 }
 
-.actions button:last-of-type {
-  background: #dc3545;
-  color: white;
+.actions .delete-btn {
+  background: var(--danger);
+  color: var(--secondary);
 }
 
 .editing {
@@ -151,17 +159,17 @@
 
 .editing input[type="number"] {
   padding: 0.5rem 0.75rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--primary-light);
   border-radius: 6px;
   font-size: 0.9rem;
-  background: #fff;
+  background: var(--secondary);
   transition: border-color 0.2s ease;
   max-width: 4ch;
 }
 
 .editing input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.2);
   outline: none;
 }
 
@@ -178,13 +186,13 @@
 }
 
 .editing-actions .save-btn {
-  background: #28a745;
-  color: white;
+  background: var(--success);
+  color: var(--secondary);
 }
 
 .editing-actions .cancel-btn {
-  background: #6c757d;
-  color: white;
+  background: var(--primary);
+  color: var(--secondary);
 }
 
 .bulk-actions {
@@ -198,8 +206,8 @@
 .bulk-actions button {
   padding: 0.5rem 1rem;
   border: none;
-  background: #6f42c1;
-  color: white;
+  background: var(--secondary);
+  color: var(--primary);
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;

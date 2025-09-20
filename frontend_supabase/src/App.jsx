@@ -34,8 +34,6 @@ function App() {
         "postgres_changes",
         { event: "*", schema: "public", table: "items" },
         (payload) => {
-          console.log("Realtime event:", payload);
-
           setItems((prev) => {
             switch (payload.eventType) {
               case "INSERT":
@@ -141,8 +139,8 @@ function App() {
                   onChange={(e) => setEditQty(parseInt(e.target.value))}
                 />
                 <div className="editing-actions">
-                  <button onClick={() => handleSaveUpdate(item.id)}>Save</button>
-                  <button onClick={() => setEditingId(null)}>Cancel</button>
+                  <button className="save-btn" onClick={() => handleSaveUpdate(item.id)}>Save</button>
+                  <button className="cancel-btn" onClick={() => setEditingId(null)}>Cancel</button>
                 </div>
               </div>
             ) : (
@@ -157,6 +155,7 @@ function App() {
                 </span>
                 <div className="actions">
                   <button
+                    className="edit-btn"
                     onClick={() => {
                       setEditingId(item.id);
                       setEditName(item.name);
@@ -165,7 +164,12 @@ function App() {
                   >
                     Edit
                   </button>
-                  <button onClick={() => handleDeleteItem(item.id)}>Delete</button>
+                  <button 
+                    className="delete-btn"
+                    onClick={() => handleDeleteItem(item.id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </>
             )}
