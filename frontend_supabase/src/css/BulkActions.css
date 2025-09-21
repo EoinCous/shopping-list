@@ -1,0 +1,19 @@
+.bulk-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.bulk-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: var(--secondary);
+  color: var(--primary);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}

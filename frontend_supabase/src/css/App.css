@@ -109,7 +109,8 @@
   border: 2px solid #e9ecef;
   border-radius: 6px;
   font-size: 0.9rem;
-  background: #fff;
+  background: var(--secondary);
+  color: #333;
   transition: border-color 0.2s ease;
   max-width: 15ch;
 }
@@ -120,6 +121,7 @@
   border-radius: 6px;
   font-size: 0.9rem;
   background: var(--secondary);
+  color: #333;
   transition: border-color 0.2s ease;
   max-width: 4ch;
 }
@@ -150,24 +152,4 @@
 .editing-actions .cancel-btn {
   background: var(--primary);
   color: var(--secondary);
-}
-
-.bulk-actions {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.bulk-actions button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background: var(--secondary);
-  color: var(--primary);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
 }
