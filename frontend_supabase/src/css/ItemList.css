@@ -38,6 +38,11 @@
   color: #333;
 }
 
+.list input[type="checkbox"] {
+  transform: scale(1.5);
+  accent-color: var(--primary);
+}
+
 .list li.checked .item-text {
   text-decoration: line-through;
   color: #6c757d;

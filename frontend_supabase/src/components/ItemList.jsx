@@ -4,7 +4,7 @@ import {
   toggleItem as toggleItemSupabase,
   saveUpdate as saveUpdateSupabase,
   deleteItem as deleteItemSupabase,
-  updateOrder as updateOrderSupabase, // <-- Add this in supabaseService
+  updateOrder as updateOrderSupabase,
 } from "../supabase/supabaseService";
 import "../css/ItemList.css";
 
