@@ -87,7 +87,7 @@ export const uncheckAll = async () => {
 };
 
 export const deleteAll = async () => {
-  const { error } = await supabase.from("items").delete().neq("id", 0);
+  const { error } = await supabase.from("items").delete().not("id", "is", null);
   if (error) {
     console.error("Error deleting all:", error);
     return false;

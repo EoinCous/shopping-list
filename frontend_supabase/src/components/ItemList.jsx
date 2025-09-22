@@ -1,5 +1,10 @@
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useState } from "react";
+import {
+    toggleItem as toggleItemSupabase,
+    saveUpdate as saveUpdateSupabase,
+  deleteItem as deleteItemSupabase
+} from "../supabase/supabaseService";
 import "../css/ItemList.css";
 
 const ItemList = ({items, setItems}) => {
