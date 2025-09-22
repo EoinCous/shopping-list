@@ -4,7 +4,7 @@ export const fetchItems = async () => {
   const { data, error } = await supabase
     .from("items")
     .select("*")
-    .order("created_at", { ascending: true });
+    .order("order", { ascending: true });
 
   if (error) {
     console.error("Error fetching items:", error);
@@ -13,16 +13,24 @@ export const fetchItems = async () => {
   return data;
 };
 
-export const addItem = async (name, qty) => {
-  const { error } = await supabase
+export const addItem = async (name, quantity) => {
+  // Find current max order
+  const { data: maxResult, error: maxError } = await supabase
     .from("items")
-    .insert([{ name, quantity: qty, is_checked: false }]);
+    .select("order")
+    .order("order", { ascending: false })
+    .limit(1);
 
-  if (error) {
-    console.error("Error adding item:", error);
-    return false;
-  }
-  return true;
+  if (maxError) throw maxError;
+
+  const maxOrder = maxResult.length > 0 ? maxResult[0].order : 0;
+
+  const { data, error } = await supabase
+    .from("items")
+    .insert([{ name, quantity, order: maxOrder + 1 }]);
+
+  if (error) throw error;
+  return data;
 };
 
 export const toggleItem = async (id, isChecked) => {
@@ -58,6 +66,18 @@ export const saveUpdate = async (id, name, qty) => {
     return false;
   }
   return true;
+};
+
+export const updateOrder = async (updates) => {
+  // Run updates sequentially
+  for (const { id, order } of updates) {
+    const { error } = await supabase
+      .from("items")
+      .update({ order })
+      .eq("id", id);
+
+    if (error) throw error;
+  }
 };
 
 export const checkAll = async () => {
