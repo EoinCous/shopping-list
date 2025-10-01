@@ -24,6 +24,30 @@
   box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
 }
 
+.add-form select {
+  padding: 0.875rem;
+  border: 2px solid var(--primary-light);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--secondary);
+  color: #333;
+  transition: border-color 0.2s ease;
+  -webkit-appearance: none; /* Removes native dropdown arrow on Safari/Chrome */
+  -moz-appearance: none; /* Removes native arrow on Firefox */
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20fill%3D%22%236f42c1%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20width%3D%2216%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22/%3E%3C/svg%3E"); 
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.add-form select:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+}
+
 .add-form button {
   padding: 0.875rem 1rem;
   border: none;

@@ -4,7 +4,8 @@ export const fetchItems = async () => {
   const { data, error } = await supabase
     .from("items")
     .select("*")
-    .order("order", { ascending: true });
+    .order("category", { ascending: true })
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.error("Error fetching items:", error);
@@ -13,23 +14,16 @@ export const fetchItems = async () => {
   return data;
 };
 
-export const addItem = async (name, quantity) => {
-  // Find current max order
-  const { data: maxResult, error: maxError } = await supabase
-    .from("items")
-    .select("order")
-    .order("order", { ascending: false })
-    .limit(1);
-
-  if (maxError) throw maxError;
-
-  const maxOrder = maxResult.length > 0 ? maxResult[0].order : 0;
-
+export const addItem = async (name, quantity, category) => {
   const { data, error } = await supabase
     .from("items")
-    .insert([{ name, quantity, order: maxOrder + 1 }]);
+    .insert([{ name, quantity, category }])
+    .select(); // return the inserted row
 
-  if (error) throw error;
+  if (error) {
+    console.error("Error adding item:", error);
+    throw error;
+  }
   return data;
 };
 
@@ -55,10 +49,10 @@ export const deleteItem = async (id) => {
   return true;
 };
 
-export const saveUpdate = async (id, name, qty) => {
+export const saveUpdate = async (id, name, quantity, category) => {
   const { error } = await supabase
     .from("items")
-    .update({ name, quantity: qty })
+    .update({ name, quantity, category })
     .eq("id", id);
 
   if (error) {
@@ -68,23 +62,11 @@ export const saveUpdate = async (id, name, qty) => {
   return true;
 };
 
-export const updateOrder = async (updates) => {
-  // Run updates sequentially
-  for (const { id, order } of updates) {
-    const { error } = await supabase
-      .from("items")
-      .update({ order })
-      .eq("id", id);
-
-    if (error) throw error;
-  }
-};
-
 export const checkAll = async () => {
   const { error } = await supabase
     .from("items")
     .update({ is_checked: true })
-    .neq("is_checked", true); // only those not checked
+    .neq("is_checked", true);
 
   if (error) {
     console.error("Error checking all:", error);
