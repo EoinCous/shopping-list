@@ -89,20 +89,31 @@
 .editing {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   flex: 1;
+}
+
+.edit-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-subfields {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .editing input[type="text"] {
   padding: 0.5rem 0.75rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--primary-light);
   border-radius: 6px;
   font-size: 0.9rem;
   background: var(--secondary);
   color: #333;
   transition: border-color 0.2s ease;
-  max-width: 15ch;
+  max-width: 25ch;
 }
 
 .editing input[type="number"] {
@@ -122,11 +133,27 @@
   outline: none;
 }
 
+.editing select {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--primary-light);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: var(--secondary);
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.editing select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(111, 66, 193, 0.2);
+  outline: none;
+}
+
 /* Save + Cancel buttons */
 .editing-actions {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   flex-shrink: 0;
 }
 

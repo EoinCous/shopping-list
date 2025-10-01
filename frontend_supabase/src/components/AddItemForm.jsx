@@ -41,6 +41,7 @@ const AddItemForm = () => {
         <option value="Dairy">Dairy</option>
         <option value="Bakery">Bakery</option>
         <option value="Household">Household</option>
+        <option value="Frozen">Frozen</option>
       </select>
 
       <button type="submit">Add</button>
