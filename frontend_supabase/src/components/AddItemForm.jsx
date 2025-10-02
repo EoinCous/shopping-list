@@ -18,12 +18,12 @@ const AddItemForm = () => {
 
   return (
     <div className="add-item-container">
-      <h2 
+      <h3 
         className="add-item-header" 
         onClick={() => setIsOpen(!isOpen)}
       >
-        Add Item {isOpen ? "⯆" : "⯈"}
-      </h2>
+        Add Item {isOpen ? "▸" : "▾"}
+      </h3>
 
       {isOpen && (
         <form onSubmit={handleAddItem} className="add-form">
