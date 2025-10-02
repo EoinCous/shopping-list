@@ -91,12 +91,12 @@ const ItemList = ({ items, setItems }) => {
       <DragDropContext onDragEnd={handleDragEnd}>
         {Object.entries(grouped).map(([category, items]) => (
           <div key={category} className="category-group">
-            <h2 
+            <h3 
               className="category-header" 
               onClick={() => toggleCollapse(category)}
             >
               {category} {collapsedCategories[category] ? "▸" : "▾"}
-            </h2>
+            </h3>
             
             {!collapsedCategories[category] && (
             <Droppable droppableId={category}>

@@ -10,6 +10,11 @@ import ItemList from "./components/ItemList";
 
 function App() {
   const [items, setItems] = useState([]);
+  const [checkedHidden, setCheckedHidden] = useState(false);
+
+  const visibleItems = checkedHidden 
+    ? items.filter((item) => !item.is_checked) 
+    : items;
 
   // Fetch items on load
   useEffect(() => {
@@ -53,10 +58,13 @@ function App() {
       <h1 className="title">Shopping List</h1>
 
       <AddItemForm />
-      <BulkActions />
+      <BulkActions 
+        checkedHidden={checkedHidden} 
+        setCheckedHidden={setCheckedHidden} 
+      />
 
       <ItemList
-        items={items}
+        items={visibleItems}
         setItems={setItems}
       />
     </div>

@@ -10,10 +10,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
 }
 .category-group {
   margin-bottom: 1rem;
+  border: 2px solid var(--secondary);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
 }
 
 .list li {
