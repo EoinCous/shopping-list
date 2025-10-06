@@ -1,7 +1,7 @@
 import {
   checkAll as checkAllSupabase,
   uncheckAll as uncheckAllSupabase,
-  deleteAll as deleteAllSupabase
+  deleteChecked as deleteCheckedSupabase
 } from "../supabase/supabaseService";
 import "../css/BulkActions.css";
 
@@ -18,8 +18,8 @@ const BulkActions = ({ checkedHidden, setCheckedHidden }) => {
         setCheckedHidden(!checkedHidden);
     };
 
-    const handleDeleteAll = async () => {
-        await deleteAllSupabase();
+    const handleDeleteChecked = async () => {
+        await deleteCheckedSupabase();
     };
 
     return (
@@ -29,7 +29,7 @@ const BulkActions = ({ checkedHidden, setCheckedHidden }) => {
         <button onClick={handleHideChecked}>
             {checkedHidden ? "Show Checked" : "Hide Checked"}
         </button>
-        <button onClick={handleDeleteAll}>Delete All</button>
+        <button onClick={handleDeleteChecked}>Delete Checked</button>
         </div>
     );
 };

@@ -65,3 +65,4 @@ dist-ssr
 *.sw?
 
 .env
+notes.txt

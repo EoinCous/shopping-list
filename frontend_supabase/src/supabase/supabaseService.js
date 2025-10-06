@@ -88,10 +88,10 @@ export const uncheckAll = async () => {
   return true;
 };
 
-export const deleteAll = async () => {
-  const { error } = await supabase.from("items").delete().not("id", "is", null);
+export const deleteChecked = async () => {
+  const { error } = await supabase.from("items").delete().eq("is_checked", true);
   if (error) {
-    console.error("Error deleting all:", error);
+    console.error("Error deleting checked:", error);
     return false;
   }
   return true;
