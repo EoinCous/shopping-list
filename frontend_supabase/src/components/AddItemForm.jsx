@@ -2,7 +2,7 @@ import { useState } from "react";
 import { addItem as addItemSupabase } from "../supabase/supabaseService";
 import "../css/AddItemForm.css";
 
-const AddItemForm = () => {
+const AddItemForm = ({ listId }) => {
   const [newItemName, setNewItemName] = useState("");
   const [newItemQty, setNewItemQty] = useState(1);
   const [newItemCategory, setNewItemCategory] = useState("Uncategorised");
@@ -10,7 +10,7 @@ const AddItemForm = () => {
 
   const handleAddItem = async (e) => {
     e.preventDefault();
-    await addItemSupabase(newItemName, newItemQty, newItemCategory);
+    await addItemSupabase(newItemName, newItemQty, newItemCategory, listId);
     setNewItemName("");
     setNewItemQty(1);
     setNewItemCategory("Uncategorised");

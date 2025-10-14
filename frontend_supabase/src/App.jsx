@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./css/App.css";
 import {
-  fetchItems as fetchItemsSupabase
+  fetchItems as fetchItemsSupabase,
+  fetchLists as fetchListsSupabase,
+  addList as addListSupabase
 } from "./supabase/supabaseService";
 import { supabase } from './supabase/supabaseClient';
 import AddItemForm from "./components/AddItemForm";
@@ -11,6 +13,7 @@ import ItemList from "./components/ItemList";
 function App() {
   const [items, setItems] = useState([]);
   const [checkedHidden, setCheckedHidden] = useState(false);
+  const [currentList, setCurrentList] = useState(null);
 
   const visibleItems = checkedHidden 
     ? items.filter((item) => !item.is_checked) 
@@ -19,7 +22,17 @@ function App() {
   // Fetch items on load
   useEffect(() => {
     (async () => {
-      const data = await fetchItemsSupabase();
+      const lists = await fetchListsSupabase();
+
+      let activeList = lists[0];
+      if (!activeList) {
+        const [newList] = await addListSupabase("Default List");
+        activeList = newList;
+      }
+
+      setCurrentList(activeList);
+      
+      const data = await fetchItemsSupabase(activeList.id);
       setItems(data);
     })();
 
@@ -55,18 +68,22 @@ function App() {
 
   return (
     <div className="app">
-      <h1 className="title">Shopping List</h1>
+      <h1 className="title">{currentList?.name || "Shopping List"}</h1>
 
-      <AddItemForm />
-      <BulkActions 
-        checkedHidden={checkedHidden} 
-        setCheckedHidden={setCheckedHidden} 
-      />
-
-      <ItemList
-        items={visibleItems}
-        setItems={setItems}
-      />
+      {currentList && (
+        <>
+          <AddItemForm listId={currentList.id} />
+          <BulkActions 
+            checkedHidden={checkedHidden} 
+            setCheckedHidden={setCheckedHidden}
+            listId={currentList.id}
+          />
+          <ItemList
+            items={visibleItems}
+            setItems={setItems}
+          />
+        </>
+      )}
     </div>
   );
 }

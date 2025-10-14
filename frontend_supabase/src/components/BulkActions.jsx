@@ -5,13 +5,13 @@ import {
 } from "../supabase/supabaseService";
 import "../css/BulkActions.css";
 
-const BulkActions = ({ checkedHidden, setCheckedHidden }) => {
+const BulkActions = ({ checkedHidden, setCheckedHidden, listId }) => {
     const handleCheckAll = async () => {
-        await checkAllSupabase();
+        await checkAllSupabase(listId);
     };
 
     const handleUncheckAll = async () => {
-        await uncheckAllSupabase();
+        await uncheckAllSupabase(listId);
     };
 
     const handleHideChecked = () => {
@@ -19,7 +19,7 @@ const BulkActions = ({ checkedHidden, setCheckedHidden }) => {
     };
 
     const handleDeleteChecked = async () => {
-        await deleteCheckedSupabase();
+        await deleteCheckedSupabase(listId);
     };
 
     return (
