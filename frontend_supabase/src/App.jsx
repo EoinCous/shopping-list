@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./css/App.css";
 import {
   fetchItems as fetchItemsSupabase
 } from "./supabase/supabaseService";
