@@ -1,12 +1,3 @@
-:root {
-  --primary: #6f42c1;
-  --primary-dark: #59339a;
-  --primary-light: #8c63d9;
-  --secondary: #ffffff;
-  --danger: #a83279;
-  --success: #20c997;
-}
-
 .app {
   width: 100%;
   min-height: 100vh;
