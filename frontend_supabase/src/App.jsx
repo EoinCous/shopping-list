@@ -84,8 +84,8 @@ function App() {
   return (
     <div className="app">
       <div className="top-bar">
-        <button className="burger" onClick={() => setMenuOpen(true)}>☰</button>
         <h1 className="title">{currentList?.name || "Shopping List"}</h1>
+        <button className="burger" onClick={() => setMenuOpen(true)}>☰</button>
       </div>
 
       {menuOpen && (

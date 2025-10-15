@@ -5,6 +5,7 @@ import {
     addList as addListSupabase,
     deleteList as deleteListSupabase
 } from "../supabase/supabaseService";
+import { FaTrash } from "react-icons/fa";
 
 const ListMenu = ({ 
   currentList, 
@@ -49,45 +50,49 @@ const ListMenu = ({
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
 
-        <ul className="list-list">
-          {lists.map((list) => (
-            <li 
-              key={list.id} 
-              className={list.id === currentList?.id ? "active" : ""}
-              onClick={() => onSelect(list)}
-            >
-              <span>{list.name}</span>
-              {list.id !== currentList?.id && (
-                <button 
-                  className="delete-btn" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteList(list.id);
-                  }}
-                >
-                  🗑️
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className="list-menu-content">
+          <ul className="list-list">
+            {lists.map((list) => (
+              <li 
+                key={list.id} 
+                className={list.id === currentList?.id ? "active" : ""}
+                onClick={() => onSelect(list)}
+              >
+                <span>{list.name}</span>
+                {list.id !== currentList?.id && (
+                  <button 
+                    className="delete-btn" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteList(list.id);
+                    }}
+                  >
+                    <FaTrash />
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        {adding ? (
-          <form onSubmit={handleAddList} className="add-list-form">
-            <input 
-              type="text"
-              placeholder="List name"
-              value={newListName}
-              onChange={(e) => setNewListName(e.target.value)}
-              autoFocus
-            />
-            <button type="submit">Add</button>
-          </form>
-        ) : (
-          <button className="add-list-btn" onClick={() => setAdding(true)}>
-            + Add New List
-          </button>
-        )}
+        <div className="menu-footer">
+          {adding ? (
+            <form onSubmit={handleAddList} className="add-list-form">
+              <input 
+                type="text"
+                placeholder="List name"
+                value={newListName}
+                onChange={(e) => setNewListName(e.target.value)}
+                autoFocus
+              />
+              <button type="submit">Add</button>
+            </form>
+          ) : (
+            <button className="add-list-btn" onClick={() => setAdding(true)}>
+              + Add New List
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
