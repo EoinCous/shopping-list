@@ -9,17 +9,19 @@ import { supabase } from './supabase/supabaseClient';
 import AddItemForm from "./components/AddItemForm";
 import BulkActions from "./components/BulkActions";
 import ItemList from "./components/ItemList";
+import ListMenu from "./components/ListMenu";
 
 function App() {
   const [items, setItems] = useState([]);
   const [checkedHidden, setCheckedHidden] = useState(false);
   const [currentList, setCurrentList] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const visibleItems = checkedHidden 
     ? items.filter((item) => !item.is_checked) 
     : items;
 
-  // Fetch items on load
+  // Fetch lists and items on load
   useEffect(() => {
     (async () => {
       const lists = await fetchListsSupabase();
@@ -66,9 +68,33 @@ function App() {
     };
   }, []);
 
+  const handleOnSelect = async (list) => {
+    if(currentList.id === list.id){
+      setMenuOpen(false);
+      return;
+    } 
+    setCurrentList(list); 
+    setItems([])
+    setMenuOpen(false);
+
+    const data = await fetchItemsSupabase(list.id);
+    setItems(data);
+  }
+
   return (
     <div className="app">
-      <h1 className="title">{currentList?.name || "Shopping List"}</h1>
+      <div className="top-bar">
+        <h1 className="title">{currentList?.name || "Shopping List"}</h1>
+        <button className="burger" onClick={() => setMenuOpen(true)}>☰</button>
+      </div>
+
+      {menuOpen && (
+        <ListMenu
+          currentList={currentList}
+          onSelect={(list) => handleOnSelect(list)}
+          onClose={() => setMenuOpen(false)}
+        />
+      )}
 
       {currentList && (
         <>
