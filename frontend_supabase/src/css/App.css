@@ -23,6 +23,7 @@
   font-size: 2rem;
   font-weight: 600;
   flex: 1;
+  max-width: 90%;
 }
 
 .burger {
