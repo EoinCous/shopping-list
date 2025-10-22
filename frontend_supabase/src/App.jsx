@@ -20,26 +20,30 @@ function App() {
     ? items.filter((item) => !item.is_checked) 
     : items;
 
-  // Fetch lists and items on load
+    // Initial list setup
   useEffect(() => {
     (async () => {
       const lists = await fetchListsSupabase();
-
       let activeList = lists[0];
       if (!activeList) {
         const [newList] = await addListSupabase("Default List");
         activeList = newList;
       }
-
       setCurrentList(activeList);
-      
-      const data = await fetchItemsSupabase(activeList.id);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!currentList) return; // Wait until a list is loaded
+
+    (async () => {
+      const data = await fetchItemsSupabase(currentList.id);
       setItems(data);
     })();
 
-    // Realtime subscription
+    // Realtime subscription for the current list
     const channel = supabase
-      .channel("items-changes")
+      .channel(`items-changes-${currentList.id}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "items" },
@@ -47,13 +51,30 @@ function App() {
           setItems((prev) => {
             switch (payload.eventType) {
               case "INSERT":
-                return [...prev, payload.new];
+                return payload.new.list_id === currentList.id
+                  ? [...prev, payload.new]
+                  : prev;
+
               case "UPDATE":
+                if (
+                  payload.old.list_id === currentList.id &&
+                  payload.new.list_id !== currentList.id
+                ) {
+                  return prev.filter((i) => i.id !== payload.new.id);
+                }
+                if (
+                  payload.old.list_id !== currentList.id &&
+                  payload.new.list_id === currentList.id
+                ) {
+                  return [...prev, payload.new];
+                }
                 return prev.map((i) =>
                   i.id === payload.new.id ? payload.new : i
                 );
+
               case "DELETE":
                 return prev.filter((i) => i.id !== payload.old.id);
+
               default:
                 return prev;
             }
@@ -65,7 +86,7 @@ function App() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [currentList]);
 
   return (
     <div className="app">

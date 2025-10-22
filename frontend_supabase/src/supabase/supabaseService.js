@@ -140,11 +140,24 @@ export const addList = async (name) => {
   return data;
 };
 
-export const deleteList = async (id) => {
-  const { error } = await supabase.from("lists").delete().eq("id", id);
+export const deleteList = async (listId) => {
+  const { error } = await supabase.from("lists").delete().eq("id", listId);
   if (error) {
     console.error("Error deleting list:", error);
     return false;
   }
   return true;
+};
+
+export const moveItemsToList = async (listId, targetListId) => {
+  const { error } = await supabase
+    .from("items")
+    .update({ list_id: targetListId })
+    .eq("is_checked", true)
+    .eq("list_id", listId);
+
+  if (error) {
+    console.error("Error moving items:", error);
+    throw error;
+  }
 };
